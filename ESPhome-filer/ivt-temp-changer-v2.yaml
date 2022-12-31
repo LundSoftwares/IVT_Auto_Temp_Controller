@@ -1,0 +1,120 @@
+esphome:
+  name: ivt-temp-changer
+
+  includes:
+    - CustomDigipotOutput.h
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "/EpTSZxA064TNEhTjjiAVZAgbOTgb4vbMLMTlsB54a4="
+  services:
+    - service: control_pot
+      variables:
+        level: float
+      then:
+        - number.set: 
+            id: digipot_level
+            value: !lambda "return level * 100;"
+
+ota:
+  password: "0163208060521e465d0db02732f309ab"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Ivt-Temp-Changer"
+    password: "MAbO6lHmwqmM"
+
+captive_portal:
+
+web_server:
+  port: 80    
+
+spi:
+  clk_pin: GPIO14
+  mosi_pin: GPIO13
+  miso_pin: GPIO12
+
+button:
+
+  - platform: template
+    name: Digipot PLUS
+    id: digipot_plus
+    on_press:
+      - logger.log: Button PLUS Pressed
+      - number.set: 
+          id: digipot_level
+          value: !lambda "return id(digipot_level).state+1;"
+
+  - platform: template
+    name: Digipot MINUS
+    id: digipot_minus
+    on_press:
+      - logger.log: Button MINUS Pressed
+      - number.set: 
+          id: digipot_level
+          value: !lambda "return id(digipot_level).state-1;"
+
+  - platform: template
+    name: Digipot SETLOW
+    id: digipot_setlow
+    on_press:
+      - logger.log: Button LOW Pressed
+      - number.set: 
+          id: digipot_level
+          value: !lambda "return 0;"
+
+  - platform: template
+    name: Digipot SETHIGH
+    id: digipot_sethigh
+    on_press:
+      - logger.log: Button HIGH Pressed
+      - number.set: 
+          id: digipot_level
+          value: !lambda "return 100;"
+
+output:
+- platform: custom
+  type: float
+  lambda: |-
+    auto custom_digipot_output = new CustomDigipotOutput();
+    App.register_component(custom_digipot_output);
+    return {custom_digipot_output};
+  outputs:
+    id: boiler_digipot
+
+number:
+  - platform: template
+    name: "Digipot level"
+    id: digipot_level
+    optimistic: true
+    min_value: 0
+    max_value: 100
+    initial_value: 0
+    step: 1
+    mode: slider
+    on_value:
+      then:
+         - output.set_level:
+             id: boiler_digipot
+             level: !lambda 'return x / 100.0;'
+
+switch:
+  - platform: gpio
+    pin: 5
+    inverted: true
+    name: "IVT Temp Tweaker 1"
+  - platform: gpio
+    pin: 4
+    inverted: true
+    name: "IVT Temp Tweaker 2" 
