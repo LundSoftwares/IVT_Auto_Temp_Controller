@@ -14,6 +14,9 @@ Detta projekt implementerar automatisk extern styrning av yttertemperatur för t
 -	[MCP41100 Digital Resistor](https://www.electrokit.com/produkt/mcp41100-i-p-dip-8-digital-pot-100kohm-256-steg-spi/)
 - Reläkort, [Dubbelt](https://www.electrokit.com/produkt/relakort-x2-5v-opto-isolerat/) eller [Enkelt](https://www.electrokit.com/produkt/relamodul-5v/)
 -	Optional: kopplingsdäck av något slag för att koppla ihop kretsarna, [t.ex. detta](https://www.electrokit.com/produkt/kopplingsdack-270-anslutningar/)
+![image](https://user-images.githubusercontent.com/23386303/210139057-4c5bb92e-2825-4982-aaab-553c5b3c5b73.png) ![image](https://user-images.githubusercontent.com/23386303/210139080-2b546aa6-e1b6-4e57-a20f-da3822a43a55.png)
+
+
 
 ### 2.	Styrsystem:
 -	Fullt fungerande Home Assistant-system med följande tillägg: NodeRed, ESPHome
@@ -35,6 +38,21 @@ Detta projekt implementerar automatisk extern styrning av yttertemperatur för t
   - input_number.temp_justering_save (påverkan Save-mode)
   - input_number.temp_justering_boost (påverkan Boost-mode)
 -	Starta NodeRed och importera de båda flödena som finns här under filer. 
--	Det ena (NodeRed Resistor Flow.txt) hanterar omvandling från önskad utetemp till nivå på den digitala resistorn. Function Noden ”Temp->Framl” behöver kalibreras beroende på vald värmekurva i pannan, för kurva 6 i en IVT490 så gäller följande formel: ”y = -0.95x + 39 där y är framledningstemp och x är ute-temp”
--	Det andra (NodeRed Control Flow.txt) hanterar styrning av önskad temp. Subflow noden ”Ngenic Style Sensors” behöver justeras så att sensorerna matchar aktuell setup. Här behöver man nog en del kunskap för att få ihop en fullt fungerande styrning som matchar just dina förutsättningar. 
+-	Det ena (NodeRed Resistor Flow.json) hanterar omvandling från önskad utetemp till nivå på den digitala resistorn. Function Noden ”Temp->Framl” behöver kalibreras beroende på vald värmekurva i pannan, för kurva 6 i en IVT490 så gäller följande formel: ”y = -0.95x + 39 där y är framledningstemp och x är ute-temp”
+-	Det andra (NodeRed Control Flow.json) hanterar styrning av önskad temp. Subflow noden ”Ngenic Style Sensors” behöver justeras så att sensorerna matchar aktuell setup. Här behöver man nog en del kunskap för att få ihop en fullt fungerande styrning som matchar just dina förutsättningar. 
 -	Lägg till ett Entity card i Home Assistant och lägg till dom entities som ska visas.
+
+
+## Bilder
+### NodeRed flow 1
+![image](https://user-images.githubusercontent.com/23386303/210139147-31ec0578-f581-43c6-932f-7ee6033d3696.png)
+
+### Node Red Subflow
+![image](https://user-images.githubusercontent.com/23386303/210139186-86e3ddf0-f48c-4890-997a-265b0af224e1.png)
+
+### Node Red Flow 2
+![image](https://user-images.githubusercontent.com/23386303/210139199-7f188a97-bf67-4154-b49c-e9860ee29eb3.png)
+
+### Home Assistant Entity Card
+![image](https://user-images.githubusercontent.com/23386303/210139264-d7704026-cb69-499a-9b0b-596c15a3d04f.png)
+
