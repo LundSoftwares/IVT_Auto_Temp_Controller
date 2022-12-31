@@ -1,6 +1,6 @@
 # IVT Auto Temp Controller
 
-**Sorry, English only for now ;)**
+**Sorry, Swedish only for now ;)**
 
 ## Disclaimer:
 **Allt detta görs givetvis på egen risk! Inga garantier ges att funktionen kommer att vara densamma på alla typer av värmepannor.**
